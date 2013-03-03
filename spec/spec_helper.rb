@@ -10,3 +10,18 @@ require_relative '../lib/logomatic'
 
 extend Uspec
 
+def self.capture
+  readme, writeme = IO.pipe
+  pid = fork do
+    $stdout.reopen writeme
+    readme.close
+
+    yield
+  end
+
+  writeme.close
+  output = readme.read
+  Process.waitpid(pid)
+
+  output
+end

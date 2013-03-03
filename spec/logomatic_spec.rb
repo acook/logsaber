@@ -28,9 +28,14 @@ spec 'can use a StringIO' do
 end
 
 spec 'can use an IO' do
-  # How to test?
-  # if it works for File and StringIO, $stdout should work just file, right?
-  true
+  output = capture do
+    fork do
+      log = Logomatic.new $stdout
+      log.debug test_string
+    end
+  end
+
+  output.include?(test_string) || output
 end
 
 log = Logomatic.new
