@@ -6,7 +6,7 @@ require 'uspec'
 
 Dir.chdir File.dirname(__FILE__)
 
-require_relative '../lib/logomatic'
+require_relative '../lib/logsaber'
 
 extend Uspec
 

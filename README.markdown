@@ -1,19 +1,19 @@
-Logomatic
+Logsaber
 =========
 
 A logger for a more civilized age.
 
-Philosophy/Why Logomatic?
+Philosophy/Why Logsaber?
 -------------------------
 
-Logomatic is a lot like Ruby's built in Logger class,
+Logsaber is a lot like Ruby's built in Logger class,
 but it is based on the real world experience of how I actually use loggers.
 
-The biggest difference is Logomatic's intelligent output.
+The biggest difference is Logsaber's intelligent output.
 
 ### Intelligent Logging
 
-If you pass a single string argument to an event method Logomatic will just log that string without any frills.
+If you pass a single string argument to an event method Logsaber will just log that string without any frills.
 
 But if you pass it an object like an Array:
 
@@ -48,7 +48,7 @@ If you pass in a block:
 end
 ```
 
-...Logomatic will intelligently evaluate it and format your output sanely:
+...Logsaber will intelligently evaluate it and format your output sanely:
 
 ```
 2013-03-02 21:20:04.715 [ INFO] 32981 | heavy : \"this could be resource intensive\" | 9999
@@ -61,13 +61,13 @@ Also, since blocks are lazy loaded, they won't be evaluated at all if the severi
 There's also some complaints about the native Logger than I address:
 
 1. You can't specify the log level on instantiation
-  - Logomatic lets you set the log level when you create it:
-    `$log = Logomatic.create file, :warn`
+  - Logsaber lets you set the log level when you create it:
+    `$log = Logsaber.create file, :warn`
   - But you can still change the default later:
     `$log.level = :info`
 2. You must specify the "progname" for every event
-  - Logomatic lets you set the app name when you create it:
-    `$log = Logomatic.create file, :warn, 'MyApp'`
+  - Logsaber lets you set the app name when you create it:
+    `$log = Logsaber.create file, :warn, 'MyApp'`
   - Or change it to something else at any time:
     `$log.appname = 'SomethingElse'`
 
@@ -92,13 +92,13 @@ Setup
 Give it a filename and it will log to a file:
 
 ```ruby
-$log = Logomatic.create './log/my_app.log'
+$log = Logsaber.create './log/my_app.log'
 ```
 
 Give it an IO and it will log to it:
 
 ```ruby
-$log = Logomatic.create $stdout
+$log = Logsaber.create $stdout
 ```
 
 Even give it a StringIO and it will log to that:
@@ -107,19 +107,19 @@ Even give it a StringIO and it will log to that:
 require 'stringio'
 stringio = StringIO.create
 
-$log = Logomatic.create stringio
+$log = Logsaber.create stringio
 ```
 
 You can also set the log level on initialization (it's :info by default):
 
 ```ruby
-$log = Logomatic.create $stdout, :debug
+$log = Logsaber.create $stdout, :debug
 ```
 
 And you can optionally specify a program name:
 
 ```ruby
-$log = Logomatic.create $stdout, :info, 'MyApp'
+$log = Logsaber.create $stdout, :info, 'MyApp'
 ```
 
 Usage

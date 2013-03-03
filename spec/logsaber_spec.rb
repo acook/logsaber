@@ -10,7 +10,7 @@ spec 'will output to a file, given a filename' do
     # ignore if file doesn't exist
   end
 
-  log = Logomatic.create filename
+  log = Logsaber.create filename
   log.debug test_string
 
   contents = File.open(filename, 'r').gets
@@ -21,7 +21,7 @@ require 'stringio'
 spec 'can use a StringIO' do
   stringio = StringIO.new
 
-  log = Logomatic.create stringio
+  log = Logsaber.create stringio
   log.debug test_string
 
   stringio.string.include? test_string
@@ -29,14 +29,14 @@ end
 
 spec 'can use an IO' do
   output = capture do
-    log = Logomatic.create $stdout
+    log = Logsaber.create $stdout
     log.debug test_string
   end
-
+binding.pry
   output.include?(test_string) || output
 end
 
-@log = Logomatic.create
+@log = Logsaber.create
 
 spec 'has shortcut methods' do
   methods = [:debug, :info, :warn, :error, :fatal]
@@ -52,7 +52,7 @@ spec 'can tell you the current minimum log level' do
 end
 
 @output = StringIO.new
-@log = Logomatic.create @output
+@log = Logsaber.create @output
 
 def self.clear_log
   @output.truncate 0

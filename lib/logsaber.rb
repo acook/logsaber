@@ -1,6 +1,6 @@
-require 'logomatic/version'
+require 'logsaber/version'
 
-class Logomatic
+class Logsaber
   def self.create new_output = $stdout, new_level = :info, new_appname = nil
     log = self.new
 
