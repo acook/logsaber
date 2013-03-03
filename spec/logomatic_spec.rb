@@ -10,7 +10,7 @@ spec 'will output to a file, given a filename' do
     # ignore if file doesn't exist
   end
 
-  log = Logomatic.new filename
+  log = Logomatic.create filename
   log.debug test_string
 
   contents = File.open(filename, 'r').gets
@@ -21,7 +21,7 @@ require 'stringio'
 spec 'can use a StringIO' do
   stringio = StringIO.new
 
-  log = Logomatic.new stringio
+  log = Logomatic.create stringio
   log.debug test_string
 
   stringio.string.include? test_string
@@ -29,14 +29,14 @@ end
 
 spec 'can use an IO' do
   output = capture do
-    log = Logomatic.new $stdout
+    log = Logomatic.create $stdout
     log.debug test_string
   end
 
   output.include?(test_string) || output
 end
 
-log = Logomatic.new
+log = Logomatic.create
 
 spec 'has shortcut methods' do
   methods = [:debug, :info, :warn, :error, :fatal]

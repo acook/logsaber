@@ -1,10 +1,20 @@
 require 'logomatic/version'
 
 class Logomatic
-  def initialize log = $stdout, new_level = :info, new_appname = nil
-    @output = log.is_a?(String) ? File.new(log, 'a') : log
-    self.level = new_level
-    self.appname = new_appname
+  def self.create new_output = $stdout, new_level = :info, new_appname = nil
+    log = self.new
+
+    log.output =
+      if new_output.is_a? String then
+        File.new new_output, 'a'
+      else
+        new_output
+      end
+
+    log.level = new_level
+    log.appname = new_appname
+
+    log
   end
   attr_accessor :output, :level, :appname, :time_format
 
