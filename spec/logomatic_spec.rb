@@ -48,5 +48,5 @@ spec 'has shortcut methods' do
 end
 
 spec 'can tell you the current minimum log level' do
-  log.min_level == :info || log.min_level
+  log.level == :info || log.level
 end

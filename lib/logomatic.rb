@@ -1,15 +1,15 @@
 require 'logomatic/version'
 
 class Logomatic
-  def initialize logfile = 'logomatic.log', min_level = :info
+  def initialize logfile = 'logomatic.log', level = :info
     @output = logfile.is_a?(String) ? File.new(logfile, 'a') : logfile
-    self.min_level = min_level
+    self.level = level
   end
-  attr_accessor :output, :min_level
+  attr_accessor :output, :level
 
-  LEVELS ||= [:debug, :info, :warn, :error, :fatal]
+  SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal]
 
-  LEVELS.each do |method_name|
+  SEVERITY_LEVELS.each do |method_name|
     eval <<-END_OF_METHOD
       def #{method_name} key, value = nil, &block
         log :#{method_name}, key, value, &block
@@ -17,13 +17,13 @@ class Logomatic
     END_OF_METHOD
   end
 
-  def min_level= new_min_level
-    @min_level = new_min_level if LEVELS.include? new_min_level
+  def level= new_level
+    @level = new_level if SEVERITY_LEVELS.include? new_level
   end
 
   protected
 
-  def log level, key, value = nil
+  def log severity, key, value = nil
     if value then
       label = key.to_s
       info = value.inspect
@@ -32,21 +32,21 @@ class Logomatic
       info  = key
     end
 
-    if block_given? && loggable?(level) then
+    if block_given? && loggable?(severity) then
       result = yield
       info << " | " unless info.empty?
       info << result
     end
 
-    message = format level, "#{label} : #{info}"
+    message = format severity, "#{label} : #{info}"
     output.puts message
     output.flush
 
     result = result || value || key
   end
 
-  def loggable? level
-    LEVELS.index(level) >= LEVELS.index(min_level)
+  def loggable? severity
+    SEVERITY_LEVELS.index(severity) >= LEVELS.index(level)
   end
 
   def format level, contents
