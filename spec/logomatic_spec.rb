@@ -29,10 +29,8 @@ end
 
 spec 'can use an IO' do
   output = capture do
-    fork do
-      log = Logomatic.new $stdout
-      log.debug test_string
-    end
+    log = Logomatic.new $stdout
+    log.debug test_string
   end
 
   output.include?(test_string) || output
