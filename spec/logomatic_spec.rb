@@ -36,17 +36,71 @@ spec 'can use an IO' do
   output.include?(test_string) || output
 end
 
-log = Logomatic.create
+@log = Logomatic.create
 
 spec 'has shortcut methods' do
   methods = [:debug, :info, :warn, :error, :fatal]
   has = methods.map do |m|
-    log.respond_to?(m) && m
+    @log.respond_to?(m) && m
   end
 
   has.all? || methods - has
 end
 
 spec 'can tell you the current minimum log level' do
-  log.level == :info || log.level
+  @log.level == :info || @log.level
 end
+
+@output = StringIO.new
+@log = Logomatic.create @output
+
+def self.clear_log
+  @output.truncate 0
+  @output.rewind
+end
+
+def format label, info
+  "[ INFO] #{Process.pid} | #{label} : #{info}"
+end
+
+
+spec 'basic usage' do
+  clear_log
+
+  @log.info test_string
+  @output.string.include? format('MSG', test_string)
+end
+
+spec ' with details usage' do
+  clear_log
+
+  @log.info :test_string, test_string
+  @output.string.include? format(:test_string, test_string.inspect)
+end
+
+spec 'object usage' do
+  clear_log
+
+  array = [1,2,3]
+  @log.info array
+  @output.string.include? format('OBJ', array.inspect)
+end
+
+spec 'basic block usage' do
+  clear_log
+
+  @log.info 'label' do
+    'block'
+  end
+  @output.string.include?(format('label', 'block')) || @output.string
+end
+
+spec 'block with details usage' do
+  clear_log
+
+  @log.info 'label', 'details' do
+    'block'
+  end
+  @output.string.include?(format('label', '"details" | block')) || @output.string
+end
+

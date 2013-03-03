@@ -23,8 +23,8 @@ class Logomatic
 
   SEVERITY_LEVELS.each do |method_name|
     eval <<-END_OF_METHOD
-      def #{method_name} key, value = nil, &block
-        log :#{method_name}, key, value, &block
+      def #{method_name} *args, &block
+        log :#{method_name}, *args, &block
       end
     END_OF_METHOD
   end
@@ -39,34 +39,45 @@ class Logomatic
 
   protected
 
-  def log severity, key, value = nil
-    if value then
-      label = key.to_s
-      info = value.inspect
-    else
-      label = 'MSG'
-      info  = key
-    end
+  def log severity, *details
+    label, info, object = extract_details details, block_given?
 
     if block_given? && loggable?(severity) then
       result = yield
-      info << " | " unless info.empty?
+
+      info << ' | ' unless info.empty?
       info << result
+
+      object = result
     end
 
     message = format severity, "#{label} : #{info}"
     output.puts message
     output.flush
 
-    result = result || value || key
+    object
+  end
+
+  def extract_details details, given_block
+    primary, secondary = details
+
+    if details.length == 2 then
+      [primary.to_s, secondary.inspect, secondary]
+    elsif given_block then
+      [primary, String.new, nil]
+    elsif [String, Numeric].any?{|klass| primary.is_a? klass} then
+      ['MSG', primary, primary]
+    else
+      ['OBJ', primary.to_s, primary]
+    end
   end
 
   def loggable? severity
-    SEVERITY_LEVELS.index(severity) >= LEVELS.index(level)
+    SEVERITY_LEVELS.index(severity) >= SEVERITY_LEVELS.index(level)
   end
 
-  def format level, contents
-    %Q{#{timestamp} [#{level_info}] #{process_info} | #{contents}}
+  def format severity, contents
+    %Q{#{timestamp} [#{severity_info severity}] #{process_info} | #{contents}}
   end
 
   def process_info
@@ -74,8 +85,8 @@ class Logomatic
     appname? ? "#{appname}:#{pid}" : pid
   end
 
-  def level_info
-    level.to_s.upcase.rjust 5
+  def severity_info severity
+    severity.to_s.upcase.rjust 5
   end
 
   def timestamp
