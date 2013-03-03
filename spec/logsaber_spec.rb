@@ -11,7 +11,7 @@ spec 'will output to a file, given a filename' do
   end
 
   log = Logsaber.create filename
-  log.debug test_string
+  log.info test_string
 
   contents = File.open(filename, 'r').gets
   contents.include?(test_string).tap{File.delete filename}
@@ -22,7 +22,7 @@ spec 'can use a StringIO' do
   stringio = StringIO.new
 
   log = Logsaber.create stringio
-  log.debug test_string
+  log.info test_string
 
   stringio.string.include? test_string
 end
@@ -30,9 +30,9 @@ end
 spec 'can use an IO' do
   output = capture do
     log = Logsaber.create $stdout
-    log.debug test_string
+    log.info test_string
   end
-binding.pry
+
   output.include?(test_string) || output
 end
 
@@ -50,6 +50,7 @@ end
 spec 'can tell you the current minimum log level' do
   @log.level == :info || @log.level
 end
+
 
 @output = StringIO.new
 @log = Logsaber.create @output
