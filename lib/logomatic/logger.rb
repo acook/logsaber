@@ -1,11 +1,9 @@
-require 'logomatic/version'
-
-class Logomatic
+module Logomatic
   def initialize logfile = 'logomatic.log', min_level = :info
-    @output = logfile.is_a?(String) ? File.new(logfile, 'a') : logfile
+    @output = File.new logfile, 'a'
     self.min_level = min_level
   end
-  attr_accessor :output, :min_level
+  attr_accessor :output, :level, :min_level
 
   LEVELS ||= [:debug, :info, :warn, :error, :fatal]
 
