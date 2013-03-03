@@ -18,7 +18,7 @@ class Logomatic
   end
   attr_accessor :output, :level, :appname, :time_format
 
-  DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S.%L'
+  DEFAULT_TIME_FORMAT ||= '%Y-%m-%d %H:%M:%S.%L'
   SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal]
 
   SEVERITY_LEVELS.each do |method_name|
@@ -40,13 +40,14 @@ class Logomatic
   protected
 
   def log severity, *details
+    return unless loggable? severity
     label, info, object = extract_details details, block_given?
 
-    if block_given? && loggable?(severity) then
+    if block_given? then
       result = yield
 
       info << ' | ' unless info.empty?
-      info << result
+      info << result.to_s
 
       object = result
     end
@@ -59,16 +60,16 @@ class Logomatic
   end
 
   def extract_details details, given_block
-    primary, secondary = details
+    primary, secondary, object = details
 
     if details.length == 2 then
-      [primary.to_s, secondary.inspect, secondary]
+      [primary.to_s, secondary.inspect, object || secondary]
     elsif given_block then
-      [primary, String.new, nil]
+      [primary, secondary.to_s, object]
     elsif [String, Numeric].any?{|klass| primary.is_a? klass} then
-      ['MSG', primary, primary]
+      ['MSG', primary, object || primary]
     else
-      ['OBJ', primary.to_s, primary]
+      ['OBJ', primary.to_s, object || primary]
     end
   end
 
