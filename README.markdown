@@ -18,7 +18,7 @@ Or install it yourself as:
 
     $ gem install logomatic
 
-Usage
+Setup
 -----
 
 Give it a filename and it will log to a file:
@@ -41,6 +41,21 @@ stringio = StringIO.new
 
 $log = Logomatic.new stringio
 ```
+
+You can also set the log level on initialization (it's :info by default):
+
+```ruby
+$log = Logomatic.new $stdout, :debug
+```
+
+And you can optionally specify a program name:
+
+```ruby
+$log = Logomatic.new $stdout, :info, 'MyApp'
+```
+
+Usage
+-----
 
 Then you can use any of the logging commands:
 

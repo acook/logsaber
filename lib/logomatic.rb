@@ -1,12 +1,14 @@
 require 'logomatic/version'
 
 class Logomatic
-  def initialize logfile = 'logomatic.log', level = :info
-    @output = logfile.is_a?(String) ? File.new(logfile, 'a') : logfile
-    self.level = level
+  def initialize log = $stdout, new_level = :info, new_appname = nil
+    @output = log.is_a?(String) ? File.new(log, 'a') : log
+    self.level = new_level
+    self.appname = new_appname
   end
-  attr_accessor :output, :level
+  attr_accessor :output, :level, :appname, :time_format
 
+  DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S.%L'
   SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal]
 
   SEVERITY_LEVELS.each do |method_name|
@@ -19,6 +21,10 @@ class Logomatic
 
   def level= new_level
     @level = new_level if SEVERITY_LEVELS.include? new_level
+  end
+
+  def time_format
+    @time_format ||= DEFAULT_TIME_FORMAT
   end
 
   protected
@@ -50,10 +56,23 @@ class Logomatic
   end
 
   def format level, contents
-    %Q{#{timestamp} [#{"#{level}".upcase.rjust(5)}] #{Process.pid} | #{contents}}
+    %Q{#{timestamp} [#{level_info}] #{process_info} | #{contents}}
+  end
+
+  def process_info
+    pid = Process.pid.to_s
+    appname? ? "#{appname}:#{pid}" : pid
+  end
+
+  def level_info
+    level.to_s.upcase.rjust 5
   end
 
   def timestamp
-    Time.now.to_s
+    Time.now.strftime time_format
+  end
+
+  def appname?
+    !!@appname
   end
 end
