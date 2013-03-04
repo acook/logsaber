@@ -1,20 +1,42 @@
 require 'logsaber/version'
 
 class Logsaber
-  def self.create new_output = $stdout, new_level = :info, new_appname = nil
-    log = self.new
+  @default_options = {output: $stdout, level: :info, appname: nil}
 
-    log.output =
-      if new_output.is_a? String then
-        File.new new_output, 'a'
-      else
-        new_output
-      end
+  class << self
+    attr :default_options
 
-    log.level = new_level
-    log.appname = new_appname
+    def create *args
+      output, level, appname = extract_options args, default_options, :output
+      log = self.new
 
-    log
+      log.output =
+        if output.is_a? String then
+          File.new output, 'a'
+        elsif output.respond_to? :puts then
+          output
+        else
+          raise "invalid output object: #{output.inspect}"
+        end
+
+      log.level = level
+      log.appname = appname
+
+      log
+    end
+
+    protected
+
+    def extract_options args, defaults, primary
+      options =
+        if args.last.is_a? Hash then
+          args.pop
+        else
+          Hash.new
+        end
+      options[primary] = args.shift if args.first
+      defaults.merge(options).values_at *defaults.keys
+    end
   end
   attr_accessor :output, :level, :appname, :time_format
 

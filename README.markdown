@@ -54,7 +54,7 @@ end
 2013-03-02 21:20:04.715 [ INFO] 32981 | heavy : "this could be resource intensive" | 9999
 ```
 
-Also, since blocks are lazy loaded, they won't be evaluated at all if the severity is below the log level threshold, 
+Also, since blocks are lazy loaded, they won't be evaluated at all if the severity is below the log level threshold,
 this is really important if your debug output is resource intensive.
 
 ### Ruby Logger Limitations Surpassed
@@ -64,13 +64,13 @@ There's also some complaints about the native Logger than I address:
 1. You can't specify the log level on instantiation.
 
   Logsaber lets you set the log level when you create it:
-    
+
   ```ruby
-  $log = Logsaber.create file, :warn
+  $log = Logsaber.create level: :warn
   ```
 
   But you can still change the default later:
-  
+
   ```ruby
   $log.level = :info
   ```
@@ -78,19 +78,19 @@ There's also some complaints about the native Logger than I address:
 2. You must specify the "progname" for every event.
 
   Logsaber lets you set your app's name when you create it:
-  
+
   ```ruby
-  $log = Logsaber.create file, :warn, 'MyApp'
+  $log = Logsaber.create appname: 'MyApp'
   ```
 
   Or change it to something else at any time:
-  
+
   ```ruby
   $log.appname = 'SomethingElse'
   ```
-  
+
   ...and the output will look like this:
-  
+
   ```
   2013-03-03 16:50:43.595 [ INFO] SomethingElse:8881 | MSG : ohai
   ```
@@ -132,13 +132,19 @@ $log = Logsaber.create stringio
 You can also set the log level on initialization (it's `:info` by default):
 
 ```ruby
-$log = Logsaber.create $stdout, :debug
+$log = Logsaber.create level: :debug
 ```
 
 And you can optionally specify the name of your app (which is `nil` by default, it's displayed next to the pid in the output):
 
 ```ruby
-$log = Logsaber.create $stdout, :info, 'MyApp'
+$log = Logsaber.create appname: 'MyApp'
+```
+
+Example with all options:
+
+```ruby
+Logsaber.create 'my_app.log', level: :debug, appname: 'MyApp'
 ```
 
 Usage

@@ -108,7 +108,7 @@ end
 spec 'accepts appname during creation' do
   clear_log
 
-  log = Logsaber.create @output, :info, 'MyAwesomeApp'
+  log = Logsaber.create output: @output, appname: 'MyAwesomeApp'
 
   log.info 'ohai'
   @output.string.include?("[ INFO] MyAwesomeApp:#{Process.pid} | MSG : ohai") || @output.string
