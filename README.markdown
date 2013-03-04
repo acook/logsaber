@@ -3,10 +3,10 @@ Logsaber
 
 A logger for a more civilized age.
 
-Philosophy/Why Logsaber?
--------------------------
+Philosophy / Why Logsaber?
+--------------------------
 
-Logsaber is a lot like Ruby's built in Logger class,
+Logsaber is a lot like Ruby's built in [Logger](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/logger/rdoc/Logger.html) class,
 but it is based on the real world experience of how I actually use loggers.
 
 The biggest difference is Logsaber's intelligent output.
@@ -98,7 +98,7 @@ There's also some complaints about the native Logger than I address:
 Installation
 ------------
 
-Using [Bundler](http://gembundler.com):
+Use [Bundler](http://gembundler.com):
 
 ```ruby
 # in your Gemfile
