@@ -37,6 +37,14 @@ class Logsaber
     @time_format ||= DEFAULT_TIME_FORMAT
   end
 
+  def color!
+    @color = true
+  end
+
+  def no_color!
+    @color = false
+  end
+
   protected
 
   def log severity, *details
@@ -78,7 +86,21 @@ class Logsaber
   end
 
   def format severity, contents
-    %Q{#{timestamp} [#{severity_info severity}] #{process_info} | #{contents}}
+    %Q{#{color severity}#{timestamp} [#{severity_info severity}] #{process_info} | #{contents}#{esc 0}}
+  end
+
+  def color severity
+    return unless color?
+
+    esc [31, 0, 33, 31, '31;1'][SEVERITY_LEVELS.index(severity)]
+  end
+
+  def esc seq
+    "\e[#{seq}m"
+  end
+
+  def color?
+    !!@color
   end
 
   def process_info
