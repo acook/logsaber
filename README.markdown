@@ -51,40 +51,59 @@ end
 ...Logsaber will intelligently evaluate it and format your output sanely:
 
 ```
-2013-03-02 21:20:04.715 [ INFO] 32981 | heavy : \"this could be resource intensive\" | 9999
+2013-03-02 21:20:04.715 [ INFO] 32981 | heavy : "this could be resource intensive" | 9999
 ```
 
-Also, since blocks are lazy loaded, they won't be evaluated at all if the severity is below the log level threshold, this is really important if your debug output is resource intensive.
+Also, since blocks are lazy loaded, they won't be evaluated at all if the severity is below the log level threshold, 
+this is really important if your debug output is resource intensive.
 
 ### Ruby Logger Limitations Surpassed
 
 There's also some complaints about the native Logger than I address:
 
-1. You can't specify the log level on instantiation
-  - Logsaber lets you set the log level when you create it:
-    `$log = Logsaber.create file, :warn`
-  - But you can still change the default later:
-    `$log.level = :info`
-2. You must specify the "progname" for every event
-  - Logsaber lets you set the app name when you create it:
-    `$log = Logsaber.create file, :warn, 'MyApp'`
-  - Or change it to something else at any time:
-    `$log.appname = 'SomethingElse'`
+1. You can't specify the log level on instantiation.
+
+  Logsaber lets you set the log level when you create it:
+    
+  ```ruby
+  $log = Logsaber.create file, :warn
+  ```
+
+  But you can still change the default later:
+  
+  ```ruby
+  $log.level = :info
+  ```
+
+2. You must specify the "progname" for every event.
+
+  Logsaber lets you set your app's name when you create it:
+  
+  ```ruby
+  $log = Logsaber.create file, :warn, 'MyApp'
+  ```
+
+  Or change it to something else at any time:
+  
+  ```ruby
+  $log.appname = 'SomethingElse'
+  ```
+  
+  ...and the output will look like this:
+  
+  ```
+  2013-03-03 16:50:43.595 [ INFO] SomethingElse:8881 | MSG : ohai
+  ```
 
 Installation
 ------------
 
-Add this line to your application's Gemfile:
+Using [Bundler](http://gembundler.com):
 
-    gem 'logomatic'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install logomatic
+```ruby
+# in your Gemfile
+gem 'logsaber'
+```
 
 Setup
 -----
@@ -95,13 +114,13 @@ Give it a filename and it will log to a file:
 $log = Logsaber.create './log/my_app.log'
 ```
 
-Give it an IO and it will log to it:
+Or you log to an IO (`$stdout` is the default, good for debugging):
 
 ```ruby
 $log = Logsaber.create $stdout
 ```
 
-Even give it a StringIO and it will log to that:
+It can even log to a StringIO (good for test environments):
 
 ```ruby
 require 'stringio'
@@ -110,13 +129,13 @@ stringio = StringIO.create
 $log = Logsaber.create stringio
 ```
 
-You can also set the log level on initialization (it's :info by default):
+You can also set the log level on initialization (it's `:info` by default):
 
 ```ruby
 $log = Logsaber.create $stdout, :debug
 ```
 
-And you can optionally specify a program name:
+And you can optionally specify the name of your app (which is `nil` by default, it's displayed next to the pid in the output):
 
 ```ruby
 $log = Logsaber.create $stdout, :info, 'MyApp'
@@ -135,10 +154,18 @@ like this:
 $log.warn 'Something might be amiss here'
 ```
 
-or this:
+or like this:
 
 ```ruby
 $log.error 'PEBKAC', @user
+```
+
+or maybe:
+
+```ruby
+@log.debug "What is this I don't even." do
+  big_data.inspect
+end
 ```
 
 Contributing
