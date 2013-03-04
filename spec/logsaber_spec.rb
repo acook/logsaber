@@ -105,3 +105,11 @@ spec 'block with details usage' do
   @output.string.include?(format('label', '"details" | block')) || @output.string
 end
 
+spec 'accepts appname during creation' do
+  clear_log
+
+  log = Logsaber.create @output, :info, 'MyAwesomeApp'
+
+  log.info 'ohai'
+  @output.string.include?("[ INFO] MyAwesomeApp:#{Process.pid} | MSG : ohai") || @output.string
+end
