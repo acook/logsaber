@@ -72,7 +72,7 @@ spec 'basic usage' do
   @output.string.include? format('MSG', test_string)
 end
 
-spec ' with details usage' do
+spec 'with details usage' do
   clear_log
 
   @log.info :test_string, test_string
