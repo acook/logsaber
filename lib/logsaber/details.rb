@@ -1,18 +1,19 @@
 module Logsaber
   class Details
     def initialize details
+      @length  = details.length
+      @label   = details.shift
       @details = details
-      @primary, @secondary, *_ = details
     end
-    attr :details, :primary, :secondary
+    attr :label, :details, :length
 
     def cleanup
-      if details.length > 1 then
-        [view(primary)] + details[1..-1].map{|item| analyze(item)}
-      elsif viewable? primary then
-        ['MSG', view(primary)]
+      if length > 1 then
+        [view(label)] + details.map{|item| analyze(item)}
+      elsif viewable? label then
+        ['MSG', view(label)]
       else
-        ['OBJ', analyze(primary)]
+        ['OBJ', analyze(label)]
       end
     end
 
