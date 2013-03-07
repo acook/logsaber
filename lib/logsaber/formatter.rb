@@ -2,15 +2,14 @@ module Logsaber
   class Formatter
     DEFAULT_TIME_FORMAT ||= '%Y-%m-%d %H:%M:%S.%L'
 
-    attr_accessor :time_format, :log
+    def initialize color = nil
+      @color = color
+    end
+    attr_accessor :time_format, :log, :color
 
     def set_log new_log
       self.log = new_log
       self
-    end
-
-    def level= new_level
-      @level = new_level if SEVERITY_LEVELS.include? new_level
     end
 
     def time_format
@@ -18,29 +17,26 @@ module Logsaber
     end
 
     def color!
-      @color = true
-    end
-
-    def no_color!
-      @color = false
-    end
-
-    def format severity, contents
-      %Q{#{color severity}#{timestamp} [#{severity_info severity}] #{process_info} | #{contents}#{esc 0 if color?}}
-    end
-
-    def color severity
-      return unless color?
-
-      esc [31, 0, 33, 31, '31;1'][SEVERITY_LEVELS.index(severity)]
-    end
-
-    def esc seq
-      "\e[#{seq}m"
+      @color = SimpleColor.new
     end
 
     def color?
       !!@color
+    end
+
+    def format severity, contents
+      index = log.class::SEVERITY_LEVELS.index(severity)
+      text  = layout severity, contents
+
+      if color? then
+        color.colorize index, text
+      else
+        text
+      end
+    end
+
+    def layout severity, contents
+      %(#{timestamp} [#{severity_info severity}] #{process_info} | #{contents})
     end
 
     def timestamp
