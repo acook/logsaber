@@ -1,4 +1,5 @@
 require 'logsaber/version'
+require 'logsaber/saber'
 require 'logsaber/log'
 
 module Logsaber

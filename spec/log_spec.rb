@@ -76,7 +76,7 @@ spec 'with details usage' do
   clear_log
 
   @log.info :test_string, test_string
-  @output.string.include? format(:test_string, test_string.inspect)
+  @output.string.include? format(:test_string, test_string)
 end
 
 spec 'object usage' do
@@ -102,7 +102,7 @@ spec 'block with details usage' do
   @log.info 'label', 'details' do
     'block'
   end
-  @output.string.include?(format('label', '"details" | block')) || @output.string
+  @output.string.include?(format('label', 'details | block')) || @output.string
 end
 
 spec 'accepts appname during creation' do
