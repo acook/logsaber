@@ -6,7 +6,7 @@ module Logsaber
           output: $stdout,
           level: :info,
           appname: nil,
-          formatter: Logsaber::Saber.new
+          formatter: Logsaber::Formatter.new
         }
         options = Options.extract_from args, default_options, :output
 

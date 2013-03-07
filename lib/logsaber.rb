@@ -1,5 +1,5 @@
 require 'logsaber/version'
-require 'logsaber/saber'
+require 'logsaber/formatter'
 require 'logsaber/log'
 require 'logsaber/options'
 require 'logsaber/entry'

@@ -1,5 +1,5 @@
 module Logsaber
-  class Saber
+  class Formatter
     DEFAULT_TIME_FORMAT ||= '%Y-%m-%d %H:%M:%S.%L'
 
     attr_accessor :time, :log
