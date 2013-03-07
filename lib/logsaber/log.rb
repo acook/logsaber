@@ -41,22 +41,20 @@ module Logsaber
 
     def log severity, *details
       return unless loggable? severity
-      label, info, object = extract_details details, block_given?
+      label, info = extract_details details, block_given?
 
       if block_given? then
         result = yield
 
         info << ' | ' unless info.empty?
         info << view(result)
-
-        object = result
       end
 
       message = format severity, "#{label} : #{info}"
       output.puts message
       output.flush
 
-      object
+      object = result || info
     end
 
     def format *args, &block
@@ -65,16 +63,16 @@ module Logsaber
     end
 
     def extract_details details, given_block
-      primary, secondary, object = details
+      primary, secondary = details
 
       if details.length == 2 then
-        [view(primary), analyze(secondary), object || secondary]
+        [view(primary), analyze(secondary), secondary]
       elsif given_block then
-        [view(primary), view(secondary), object]
+        [view(primary), view(secondary)]
       elsif viewable?(primary) then
-        ['MSG', view(primary), object || primary]
+        ['MSG', view(primary), primary]
       else
-        ['OBJ', analyze(primary), object || primary]
+        ['OBJ', analyze(primary), primary]
       end
     end
 
