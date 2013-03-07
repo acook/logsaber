@@ -3,6 +3,12 @@ Logsaber
 
 A logger for a more civilized age.
 
+- Edge Logsaber   README: https://github.com/acook/logsaber#readme
+- Release version README: http://rubydoc.info/gems/logsaber/file/README.markdown
+
+[![Code Climate](https://codeclimate.com/github/acook/logsaber.png)](https://codeclimate.com/github/acook/logsaber)
+
+
 Philosophy / Why Logsaber?
 --------------------------
 
