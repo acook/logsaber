@@ -44,9 +44,9 @@ module Logsaber
     def log severity, *details, &block
       return unless loggable? severity
 
-      label, info, object = *Entry.new(*details, &block)
+      options = {severity: severity, formatter: formatter}
+      message, object = *Entry.new(details, options, &block)
 
-      message = format severity, "#{label} : #{info}"
       output.puts message
       output.flush
 
