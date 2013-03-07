@@ -6,25 +6,20 @@ module Logsaber
     attr_accessor :formatter
 
     def generate severity, raw_details, &block
-      details = Details.new raw_details, !!block
+      raw_details << block.call if block
 
-      label, info, object = compile details.cleanup, block
-      message = formatter.format severity, "#{label} : #{info}"
+      details = Details.new raw_details
+      text, object = compile details.cleanup
+      message = formatter.format severity, text
 
       [message, object]
     end
 
-    def compile details, block
-      label, info, *_ = details
+    protected
 
-      if block then
-        result = block.call
-
-        info << ' | ' unless info.empty?
-        info << result.to_s
-      end
-
-      [label, info, result || info || label]
+    def compile details
+      label = details.shift
+      ["#{label} : #{details.join ' | '}", details.last || label]
     end
   end
 end
