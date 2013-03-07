@@ -10,7 +10,7 @@ module Logsaber
       @label   = details.shift
       @details = details
     end
-    attr :label, :details, :length
+    attr :length, :label, :details
 
     def cleanup
       if length > 1 then
