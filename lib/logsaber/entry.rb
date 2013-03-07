@@ -7,19 +7,18 @@ module Logsaber
 
     def generate severity, raw_details, &block
       raw_details << block.call if block
+      details = Details.cleanup raw_details
 
-      details = Details.new raw_details
-      text, object = compile details.cleanup
+      text = compile *details
       message = formatter.format severity, text
 
-      [message, object]
+      [message, details.last || label]
     end
 
     protected
 
-    def compile details
-      label = details.shift
-      ["#{label} : #{details.join ' | '}", details.last || label]
+    def compile label, *details
+      "#{label} : #{details.join ' | '}"
     end
   end
 end

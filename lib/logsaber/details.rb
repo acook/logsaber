@@ -1,5 +1,10 @@
 module Logsaber
   class Details
+    def self.cleanup details
+      new_details = new details
+      new_details.cleanup
+    end
+
     def initialize details
       @length  = details.length
       @label   = details.shift

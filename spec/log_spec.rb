@@ -137,7 +137,15 @@ spec 'timestamp format is mutable' do
 
   @log.formatter.time_format = 'xxx%Yxxx'
   @log.info test_string
+  @log.formatter.time_format = Logsaber::Formatter::DEFAULT_TIME_FORMAT
 
   match = @output.string.match /(xxx\d\d\d\dxxx) (#{Regexp.escape format('MSG', test_string)})/
   !match[0].nil? && !match[1].nil? || match rescue @output.string
+end
+
+spec 'Log#log allows many items' do
+  clear_log
+
+  @log.info :foo, '1', '2', '3'
+  @output.string.include? format('foo', '1 | 2 | 3')
 end
