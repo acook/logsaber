@@ -43,7 +43,7 @@ module Logsaber
 
     def log severity, *details, &block
       return unless loggable? severity
-      message, object = Entry.generate details, &block
+      message, object = Entry.create(details, &block).generate
 
       out format(severity, message)
       object
