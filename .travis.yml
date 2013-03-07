@@ -4,7 +4,7 @@ rvm:
   - 1.9.2
   - rbx-19mode
   - ruby-head
-script: bundle exec rspec spec --profile -f d -c
+script: bundle exec ruby spec/log_spec.rb
 before_install:
   - gem update bundler
 before_script:
