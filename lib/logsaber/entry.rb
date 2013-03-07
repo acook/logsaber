@@ -1,12 +1,20 @@
 module Logsaber
   class Entry
-    def initialize *options, &block
-      defaults = {formatter: nil, severity: nil}
-      @options = Options.extract_from options, defaults, :details
-      @details = @options.details
-      @block   = block
+    def initialize formatter
+      @formatter = formatter
     end
-    attr_accessor :details, :block, :options
+    attr_accessor :formatter, :details, :block
+
+    def generate severity, details, &block
+      @severity = severity
+      @details = details
+      @block   = block
+
+      label, info, object = compile
+      message = formatter.format severity, "#{label} : #{info}"
+
+      [message, object]
+    end
 
     def extract_details details
       primary, secondary = details
@@ -56,13 +64,5 @@ module Logsaber
 
       [label, info, result || info || label]
     end
-
-    def to_a
-      label, info, object = compile
-      message = options.formatter.format options.severity, "#{label} : #{info}"
-
-      [message, object]
-    end
-    alias_method :to_ary, :to_a
   end
 end
