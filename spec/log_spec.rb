@@ -127,3 +127,7 @@ spec 'setting level to :off will prevent any logging' do
 
   output.empty? || output
 end
+
+spec 'there is no "off" method' do
+  !@log.respond_to? :off
+end
