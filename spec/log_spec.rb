@@ -113,3 +113,17 @@ spec 'accepts appname during creation' do
   log.info 'ohai'
   @output.string.include?("[ INFO] MyAwesomeApp:#{Process.pid} | MSG : ohai") || @output.string
 end
+
+spec 'setting level to :off will prevent any logging' do
+  output = capture do
+    log = Logsaber.create level: :off
+
+    log.debug 'debug'
+    log.info 'info'
+    log.warn 'warn'
+    log.error 'error'
+    log.fatal 'fatal'
+  end
+
+  output.empty? || output
+end
