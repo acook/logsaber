@@ -46,17 +46,12 @@ module Logsaber
       message, object = entry.generate severity, details, &block
 
       out message
-
       object
     end
 
     def out text
       output.puts text
       output.flush
-    end
-
-    def format *args, &block
-      formatter.format *args, &block
     end
 
     def entry
