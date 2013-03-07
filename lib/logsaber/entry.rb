@@ -1,37 +1,49 @@
 module Logsaber
   class Entry
-    def self.create details, &block
-      details << block.call if block
-      new details.length, details.shift, *details
+    def self.create all_details, &block
+      all_details << block.call if block
+      new all_details.length, all_details.shift, Array(all_details)
     end
 
-     def initialize *details
-      @length  = details.shift
-      @label   = details.shift
-      @details = Array(details)
+    def initialize length, primary, secondary
+      @length, @primary, @secondary = length, primary, secondary
     end
-    attr :length, :label, :details
+    attr :length, :primary, :secondary
 
-    def generate
-      text = compile *clean_details
-
-      [text, details.last]
+    def parse
+      [text, value]
     end
 
     protected
 
-    def compile label, *details
-      "#{label} : #{details.join ' | '}"
+    def value
+      secondary.last || primary
     end
 
-    def clean_details
-      if length > 1 then
-        [view(label)] + details.map{|item| analyze(item)}
-      elsif viewable? label then
-        ['MSG', view(label)]
+    def text
+      "#{label} : #{info}"
+    end
+
+    def label
+      if !secondary.empty? then
+        view primary
+      elsif primary.is_a? String then
+        'MSG'
       else
-        ['OBJ', analyze(label)]
+        'OBJ'
       end
+    end
+
+    def info
+      if secondary.empty? then
+        view primary
+      else
+        details
+      end
+    end
+
+    def details
+      secondary.map{|item| analyze item }.join ' | '
     end
 
     def analyze object
