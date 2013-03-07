@@ -2,15 +2,15 @@ module Logsaber
   class Formatter
     DEFAULT_TIME_FORMAT ||= '%Y-%m-%d %H:%M:%S.%L'
 
-    attr_accessor :time, :log
-
-    def level= new_level
-      @level = new_level if SEVERITY_LEVELS.include? new_level
-    end
+    attr_accessor :time_format, :log
 
     def set_log new_log
       self.log = new_log
       self
+    end
+
+    def level= new_level
+      @level = new_level if SEVERITY_LEVELS.include? new_level
     end
 
     def time_format

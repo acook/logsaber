@@ -131,3 +131,13 @@ end
 spec 'there is no "off" method' do
   !@log.respond_to? :off
 end
+
+spec 'timestamp format is mutable' do
+  clear_log
+
+  @log.formatter.time_format = 'xxx%Yxxx'
+  @log.info test_string
+
+  match = @output.string.match /(xxx\d\d\d\dxxx) (#{Regexp.escape format('MSG', test_string)})/
+  !match[0].nil? && !match[1].nil? || match rescue @output.string
+end
