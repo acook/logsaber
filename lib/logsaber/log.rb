@@ -3,51 +3,43 @@ module Logsaber
     class << self
       def create *args
         default_options = {
-          output: $stdout, level: :info, appname: nil,
+          output: $stdout,
+          level: :info,
+          appname: nil,
           formatter: Logsaber::Saber.new
         }
+        options = Options.extract_from args, default_options, :output
+        options.output = outputize options.output
 
-        output, level, appname, formatter = extract_options args, default_options, :output
-        log = self.new
-
-        log.output =
-          if output.is_a? String then
-            File.new output, 'a'
-          elsif output.respond_to? :puts then
-            output
-          else
-            raise "invalid output object: #{output.inspect}"
-          end
-
-        log.level = level
-        log.appname = appname
-        log.formatter = formatter
-
-        log
+        self.new *options
       end
 
       protected
 
-      def extract_options args, defaults, primary
-        options =
-          if args.last.is_a? Hash then
-            args.pop
-          else
-            Hash.new
-          end
-        options[primary] = args.shift if args.first
-        defaults.merge(options).values_at *defaults.keys
+      def outputize new_output
+        if new_output.is_a? String then
+          File.new new_output, 'a'
+        elsif new_output.respond_to? :puts then
+          new_output
+        else
+          raise "invalid output object: #{new_output.inspect}"
+        end
       end
     end
-    attr_accessor :output, :level, :appname, :formatter
 
     SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal]
 
+    def initialize output, level, appname, formatter
+      @output, @level, @appname, @formatter = output, level, appname, formatter
+    end
+
+    attr_accessor :output, :level, :appname, :formatter
+
     SEVERITY_LEVELS.each do |method_name|
       eval <<-END_OF_METHOD
-      def #{method_name} *args, &block
-        log :#{method_name}, *args, &block
-      end
+        def #{method_name} *args, &block
+          log :#{method_name}, *args, &block
+        end
       END_OF_METHOD
     end
 
