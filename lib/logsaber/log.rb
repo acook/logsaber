@@ -17,8 +17,10 @@ module Logsaber
     SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal, :off]
 
     def initialize output, level, appname, formatter
-      @output = outputize output
-      @level, @appname, @formatter = level.to_sym, appname, formatter
+      @output    = outputize output
+      @level     = level.to_sym
+      @appname   = appname
+      @formatter = formatter.set_log self
 
       unless SEVERITY_LEVELS.include? @level then
         raise "Invalid level: #{level.inspect}.\nUse one of: #{SEVERITY_LEVELS}"
@@ -39,59 +41,20 @@ module Logsaber
 
     protected
 
-    def log severity, *details
+    def log severity, *details, &block
       return unless loggable? severity
-      label, info = extract_details details, block_given?
 
-      if block_given? then
-        result = yield
-
-        info << ' | ' unless info.empty?
-        info << view(result)
-      end
+      label, info, object = *Entry.new(*details, &block)
 
       message = format severity, "#{label} : #{info}"
       output.puts message
       output.flush
 
-      object = result || info
+      object
     end
 
     def format *args, &block
-      formatter.appname = appname
       formatter.format *args, &block
-    end
-
-    def extract_details details, given_block
-      primary, secondary = details
-
-      if details.length == 2 then
-        [view(primary), analyze(secondary), secondary]
-      elsif given_block then
-        [view(primary), view(secondary)]
-      elsif viewable?(primary) then
-        ['MSG', view(primary), primary]
-      else
-        ['OBJ', analyze(primary), primary]
-      end
-    end
-
-    def view object
-      return '' if object.nil? || object.empty?
-
-      if viewable? object then
-        object.to_s
-      else
-        object.inspect
-      end
-    end
-
-    def viewable? object
-      [String, Symbol, Numeric].any?{|klass| object.is_a? klass}
-    end
-
-    def analyze object
-      object.is_a?(String) ? object : object.inspect
     end
 
     def loggable? severity

@@ -2,10 +2,15 @@ module Logsaber
   class Saber
     DEFAULT_TIME_FORMAT ||= '%Y-%m-%d %H:%M:%S.%L'
 
-    attr_accessor :time, :appname
+    attr_accessor :time, :log
 
     def level= new_level
       @level = new_level if SEVERITY_LEVELS.include? new_level
+    end
+
+    def set_log new_log
+      self.log = new_log
+      self
     end
 
     def time_format
@@ -38,21 +43,25 @@ module Logsaber
       !!@color
     end
 
-    def process_info
-      pid = Process.pid.to_s
-      appname? ? "#{appname}:#{pid}" : pid
+    def timestamp
+      Time.now.strftime time_format
     end
 
     def severity_info severity
       severity.to_s.upcase.rjust 5
     end
 
-    def timestamp
-      Time.now.strftime time_format
+    def process_info
+      pid = Process.pid.to_s
+      appname? ? "#{appname}:#{pid}" : pid
     end
 
     def appname?
-      !!@appname
+      !!appname
+    end
+
+    def appname
+      log.appname
     end
   end
 end
