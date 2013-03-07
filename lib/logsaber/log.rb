@@ -47,10 +47,14 @@ module Logsaber
       options = {severity: severity, formatter: formatter}
       message, object = *Entry.new(details, options, &block)
 
-      output.puts message
-      output.flush
+      out message
 
       object
+    end
+
+    def out text
+      output.puts text
+      output.flush
     end
 
     def format *args, &block
