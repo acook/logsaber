@@ -46,20 +46,21 @@ module Logsaber
       secondary.map{|item| analyze item }.join ' | '
     end
 
-    def analyze object
-      object.is_a?(String) ? object : object.inspect
+    def view object
+      viewable?(object) ? object.to_s : object.inspect
     end
 
-    def view object
-      if object.nil? || object.empty? || viewable?(object) then
-        object.to_s
-      else
-        object.inspect
-      end
+    def analyze object
+      analyzeable?(object) ? object : object.inspect
     end
 
     def viewable? object
-      [String, Symbol, Numeric].any?{|klass| object.is_a? klass}
+      object && (analyzeable?(object) || object.is_a?(Symbol))
     end
+
+    def analyzeable? object
+      object.is_a?(String) && !object.empty?
+    end
+
   end
 end
