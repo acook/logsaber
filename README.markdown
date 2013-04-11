@@ -3,8 +3,7 @@ Logsaber
 
 A logger for a more civilized age.
 
-- Edge Logsaber   README: https://github.com/acook/logsaber#readme
-- Release version README: http://rubydoc.info/gems/logsaber/file/README.markdown
+Reference documentation for the [Latest Released](http://rubydoc.info/gems/logsaber/file/README.markdown) and [Edge Version](https://github.com/acook/logsaber#readme) is available.
 
 [![Build Status](https://travis-ci.org/acook/logsaber.png?branch=master)](https://travis-ci.org/acook/logsaber)
 [![Code Climate](https://codeclimate.com/github/acook/logsaber.png)](https://codeclimate.com/github/acook/logsaber)
