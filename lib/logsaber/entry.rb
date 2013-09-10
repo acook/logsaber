@@ -2,26 +2,28 @@ module Logsaber
   class Entry
     def self.create all_details, &block
       all_details << block.call if block
-      new all_details.length, all_details.shift, Array(all_details)
+      new all_details.shift, Array(all_details)
     end
 
-    def initialize length, primary, secondary
-      @length, @primary, @secondary = length, primary, secondary
+    def initialize primary, secondary
+      @primary, @secondary = primary, secondary
     end
-    attr :length, :primary, :secondary
+    attr :primary, :secondary
 
     def parse
-      [text, value]
+      {
+        label: label,
+        info: info,
+        primary: primary,
+        secondary: secondary,
+        object: value
+       }
     end
 
     protected
 
     def value
       secondary.last || primary
-    end
-
-    def text
-      "#{label} : #{info}"
     end
 
     def label
@@ -36,14 +38,14 @@ module Logsaber
 
     def info
       if secondary.empty? then
-        view primary
+        Array view primary
       else
         details
       end
     end
 
     def details
-      secondary.map{|item| analyze item }.join ' | '
+      secondary.map{|item| analyze item }
     end
 
     def view object

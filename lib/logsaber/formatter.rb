@@ -36,7 +36,11 @@ module Logsaber
     end
 
     def layout severity, contents
-      %(#{timestamp} [#{severity_info severity}] #{process_info} | #{contents})
+      %(#{timestamp} [#{severity_info severity}] #{process_info} | #{view contents})
+    end
+
+    def view contents
+      "#{contents[:label]} : #{contents[:info].join ' | '}"
     end
 
     def timestamp
