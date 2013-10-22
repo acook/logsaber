@@ -17,7 +17,7 @@ module Logsaber
     SEVERITY_LEVELS ||= [:debug, :info, :warn, :error, :fatal, :off]
 
     def initialize output, level, appname, formatter
-      @output    = outputize output
+      self.output = output
       @level     = level.to_sym
       @appname   = appname
       @formatter = formatter.set_log self
@@ -39,6 +39,11 @@ module Logsaber
       END_OF_METHOD
     end
 
+    def output= new_output
+      @output ||= Array.new
+      [new_output].flatten.each {|io| @output << outputize(io) }
+    end
+
     protected
 
     def log severity, *details, &block
@@ -50,8 +55,10 @@ module Logsaber
     end
 
     def out text
-      output.puts text
-      output.flush
+      output.each do |io|
+        io.puts text
+        io.flush
+      end
     end
 
     def format *args
