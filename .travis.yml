@@ -1,10 +1,11 @@
 language: ruby
 rvm:
+  - 2.1.2
   - 2.0.0
   - 1.9.3
   - 1.9.2
-  - rbx-19mode
 
+  - rbx-19mode
   - ruby-head
   - jruby-19mode
 
@@ -18,5 +19,6 @@ script: bundle exec ruby spec/log_spec.rb
 
 matrix:
   allow_failures:
+    - rvm: rbx-19mode
     - rvm: ruby-head
     - rvm: jruby-19mode
