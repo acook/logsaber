@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Logsaber
   class Options < OpenStruct
     def self.extract_from args, defaults = {}, primary = nil
