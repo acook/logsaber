@@ -17,6 +17,7 @@ module Logsaber
     end
 
     def color!
+      require 'logsaber/simple_color'
       @color = SimpleColor.new
     end
 
