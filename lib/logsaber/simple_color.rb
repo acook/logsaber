@@ -1,6 +1,6 @@
 module Logsaber
   class SimpleColor
-    attr_accessor colors
+    attr_accessor :colors
 
     def colorize index, text = nil, &block
       "#{color index}#{text || yield}#{esc 0}"
