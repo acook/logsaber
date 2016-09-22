@@ -5,9 +5,10 @@ A logger for a more civilized age.
 
 Reference documentation for the [Latest Released](http://rubydoc.info/gems/logsaber/file/README.markdown) and [Edge Version](https://github.com/acook/logsaber#readme) is available.
 
-[![Build Status](https://travis-ci.org/acook/logsaber.png?branch=master)](https://travis-ci.org/acook/logsaber)
-[![Code Climate](https://codeclimate.com/github/acook/logsaber.png)](https://codeclimate.com/github/acook/logsaber)
-[![Dependency Status](https://gemnasium.com/acook/logsaber.png)](https://gemnasium.com/acook/logsaber)
+[![Build Status](https://travis-ci.org/acook/logsaber.svg?branch=master)](https://travis-ci.org/acook/logsaber)
+[![Code Climate](https://codeclimate.com/github/acook/logsaber/badges/gpa.svg)](https://codeclimate.com/github/acook/logsaber)
+[![Dependency Status](https://gemnasium.com/badges/github.com/acook/logsaber.svg)](https://gemnasium.com/github.com/acook/logsaber)
+
 
 Philosophy / Why Logsaber?
 --------------------------
@@ -192,4 +193,4 @@ Contributing
 Author
 ======
 
-    Anthony M. Cook 2013
+    Anthony M. Cook 2016
