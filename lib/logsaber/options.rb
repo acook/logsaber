@@ -1,7 +1,7 @@
 require 'ostruct'
 
 module Logsaber
-  class Options < OpenStruct
+  class Options < ::OpenStruct
     def self.extract_from args, defaults = {}, primary = nil
       options = args.last.is_a?(Hash) ? args.pop : Hash.new
       options[primary] = args.shift if primary && args.first
