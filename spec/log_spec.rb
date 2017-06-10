@@ -1,5 +1,21 @@
 require_relative 'spec_helper'
 
+def self.capture
+  readme, writeme = IO.pipe
+  pid = fork do
+    $stdout.reopen writeme
+    readme.close
+
+    yield
+  end
+
+  writeme.close
+  output = readme.read
+  Process.waitpid(pid)
+
+  output
+end
+
 test_string = 'foo'
 
 spec 'will output to a file, given a filename' do

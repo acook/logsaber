@@ -9,5 +9,5 @@ spec 'does stuff' do
   actual    = stringio.tap(&:rewind).read
   match     = expecting.match actual
 
-  !!match || match
+  !!match || actual
 end
