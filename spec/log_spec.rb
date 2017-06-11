@@ -1,5 +1,21 @@
 require_relative 'spec_helper'
 
+def self.capture
+  readme, writeme = IO.pipe
+  pid = fork do
+    $stdout.reopen writeme
+    readme.close
+
+    yield
+  end
+
+  writeme.close
+  output = readme.read
+  Process.waitpid(pid)
+
+  output
+end
+
 test_string = 'foo'
 
 spec 'will output to a file, given a filename' do
@@ -149,3 +165,23 @@ spec 'Log#log allows many items' do
   @log.info :foo, '1', '2', '3'
   @output.string.include? format('foo', '1 | 2 | 3')
 end
+
+spec 'Log.create can take an array of outputs' do
+  Logsaber::Log.create output: [StringIO.new, StringIO.new]
+  true
+end
+
+spec 'Logging goes to every output' do
+  s1 = StringIO.new
+  s2 = StringIO.new
+
+  text = 'What we display??'
+
+  @log = Logsaber::Log.create output: [s1, s2]
+
+  @log.error text
+
+  s1.string.include?(text) && s2.string.include?(text) || s2.string
+end
+
+
