@@ -5,8 +5,8 @@ A logger for a more civilized age.
 
 Reference documentation for the [Latest Released](http://rubydoc.info/gems/logsaber/file/README.markdown) and [Edge Version](https://github.com/acook/logsaber#readme) is available.
 
-[![Build Status](https://travis-ci.org/acook/logsaber.svg?branch=master)](https://travis-ci.org/acook/logsaber)
-[![Code Climate](https://codeclimate.com/github/acook/logsaber/badges/gpa.svg)](https://codeclimate.com/github/acook/logsaber)
+[![CircleCI](https://img.shields.io/circleci/build/github/acook/logsaber?style=for-the-badge&token=de887bd244ab55306432fef45b8307ef4c18075c)](https://app.circleci.com/pipelines/github/acook/logsaber)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/acook/logsaber?style=for-the-badge)](https://codeclimate.com/github/acook/logsaber)
 
 Philosophy / Why Logsaber?
 --------------------------
