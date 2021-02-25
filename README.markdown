@@ -7,8 +7,6 @@ Reference documentation for the [Latest Released](http://rubydoc.info/gems/logsa
 
 [![Build Status](https://travis-ci.org/acook/logsaber.svg?branch=master)](https://travis-ci.org/acook/logsaber)
 [![Code Climate](https://codeclimate.com/github/acook/logsaber/badges/gpa.svg)](https://codeclimate.com/github/acook/logsaber)
-[![Dependency Status](https://gemnasium.com/badges/github.com/acook/logsaber.svg)](https://gemnasium.com/github.com/acook/logsaber)
-
 
 Philosophy / Why Logsaber?
 --------------------------
@@ -193,4 +191,4 @@ Contributing
 Author
 ======
 
-    Anthony M. Cook 2016
+    Anthony M. Cook 2013-2021
