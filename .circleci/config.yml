@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ruby: cimg/ruby:3.1.2
+  ruby: circleci/ruby@2.0.0
 
 jobs:
   build:
