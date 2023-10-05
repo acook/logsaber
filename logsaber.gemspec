@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name          = 'logsaber'
   gem.version       = Logsaber::VERSION
   gem.authors       = ['Anthony Cook']
-  gem.email         = ['anthonymichaelcook@gmail.com']
+  gem.email         = ['github@anthonymcook.com']
   gem.description   = %q{A logger for a more civilized age. Intelligent logs for your applications.}
   gem.summary       = %q{A logger for a more civilized age.}
   gem.homepage      = 'http://github.com/acook/logsaber'
